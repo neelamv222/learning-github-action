@@ -27,3 +27,6 @@ jobs:
          npm install
          npm run build --if-present
          npm test
+         
+    - name: Coverage
+      run: npm run t:coverage
