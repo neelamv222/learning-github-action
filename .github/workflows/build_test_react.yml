@@ -30,3 +30,9 @@ jobs:
       
     - name: Coverage
       run: npm run t:coverage
+      
+    - name: Upload build to Artifact in order to deploy
+      uses: actions/upload-artifact@v2
+      with: 
+       name: production-files
+       path: ./dist
