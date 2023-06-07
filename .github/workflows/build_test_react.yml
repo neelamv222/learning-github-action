@@ -9,16 +9,15 @@ on:
 jobs:
   build_test:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
 
     steps:
-    - name: Checkout code
     - uses: actions/checkout@v3
 
-    - name: Install node - Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
@@ -26,17 +25,8 @@ jobs:
     - name: Install dependencies
       run: npm install
       
-    - name: Coverage
-      run: npm run t:coverage
-      
-    - name: Build App
+    - name: Build
       run: npm run build
       
-    - name: Upload build to Artifact in order to deploy
-      uses: actions/upload-artifact@v2
-      with: 
-       name: production-files
-       path: ./dist
- 
-
-      
+    - name: Coverage
+      run: npm run t:coverage
