@@ -11,6 +11,7 @@ function App() {
 
   return (
     <div className="App">
+    <h1>React github action learning</h1>
     <span>{count}</span>
     <button type="button" className="btn btn-dark" onClick={onClick}>Dark</button>
     </div>
