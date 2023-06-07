@@ -39,24 +39,6 @@ jobs:
        name: production-files
        path: ./dist
        
- # Deploy job 
- # (the virtual machine for build and deploy could be diff)
-  deploy:
-    runs-on: ubuntu-latest
-    needs: Build
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v2
-      with:
-       name: production-files
-       path: ./dist
-     
-    - name:  Deploy to Gh Pages
-      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{secrets.GH_ACCESS_TOKEN}}
         publish_dir: ./dist
