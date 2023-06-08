@@ -16,3 +16,9 @@ jobs:
         echo "Hey its DEV env"
         echo ${{github.ref}}
         echo ${{github.workspace}}
+        
+    - name: Display default variables
+      run: |
+        echo "REF and ACTOR"
+        echo $GITHUB_REF
+        echo $GITHUB_actor
