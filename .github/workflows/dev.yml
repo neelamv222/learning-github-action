@@ -14,3 +14,5 @@ jobs:
     - name: Run a script
       run: |
         echo "Hey its DEV env"
+        echo ${{github.ref}}
+        echo ${{github.workspace}}
