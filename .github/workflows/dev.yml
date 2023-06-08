@@ -1,0 +1,16 @@
+name: CIT DEV Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  DEV:
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Run a script
+      run: |
+        echo "Hey its DEV env"
