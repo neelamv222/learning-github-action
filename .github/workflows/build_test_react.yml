@@ -7,6 +7,9 @@ on:
     branches: [ "main" ]
 
 jobs:
+  call_test_workflow:
+    uses: ./.github/workflows/test-cases.yml
+    
   build_test:
     runs-on: ubuntu-latest
     strategy:
@@ -25,9 +28,6 @@ jobs:
       
     - name: Build
       run: npm run build
-      
-    - name: Coverage
-      run: npm run t:coverage
       
     - name: Upload build to Artifact in order to deploy
       uses: actions/upload-artifact@v2
