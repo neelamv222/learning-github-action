@@ -17,8 +17,33 @@ jobs:
         echo ${{github.ref}}
         echo ${{github.workspace}}
         
-    - name: Display default variables
-      run: |
-        echo "REF and ACTOR"
-        echo $GITHUB_REF
-        echo $GITHUB_actor
+    - name: Use Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build
+      run: npm run build 
+      
+    - name: Save version of app
+      id: version
+      run: echo ::set-output name=tag::$(echo $(node -p -e "require('./package.json').version"))
+  
+    - name: Push the version version
+      run: git push
+      
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Build Docker image
+      run: docker build . --file Dockerfile --tag neelamv222/demo:${{steps.version.outputs.tag}}
+
+    - name: Push to Docker Hub
+      run: docker push neelamv222/demo:${{steps.version.outputs.tag}}
+
+      
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
