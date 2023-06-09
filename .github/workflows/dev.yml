@@ -21,11 +21,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 14
-        
-    - name: setup git config
-      run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
           
     - name: Install dependencies
       run: npm install
@@ -37,9 +32,6 @@ jobs:
       id: version
       run: echo ::set-output name=tag::$(echo $(node -p -e "require('./package.json').version"))
   
-    - name: Push the version version
-      run: git push
-      
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
@@ -49,6 +41,4 @@ jobs:
     - name: Push to Docker Hub
       run: docker push neelamv222/demo:${{steps.version.outputs.tag}}
 
-      
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
