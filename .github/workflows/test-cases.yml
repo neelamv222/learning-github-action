@@ -1,6 +1,7 @@
 name: Run Test Cases and  Generate Test Coverage Report
 on:
   workflow_call:
+  workflow_dispatch:
 jobs:
   build_test:
     runs-on: ubuntu-latest
