@@ -1,0 +1,57 @@
+name: Test, Build and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  call_test_workflow:
+    uses: ./.github/workflows/test-cases.yml
+  build_test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+      
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build
+      run: npm run build
+      
+    - name: Upload build to Artifact in order to deploy
+      uses: actions/upload-artifact@v2
+      with: 
+       name: production-files
+       path: ./build
+
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: build_test
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+       name: production-files
+       path: ./dist
+     
+    - name:  Deploy to Gh Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{secrets.GH_ACCESS_TOKEN}}
+        publish_dir: ./dist
+
+    
