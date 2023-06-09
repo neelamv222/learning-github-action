@@ -1,4 +1,4 @@
-name: CIT DEV Workflow
+name: Create and Push Docker Image
 
 on:
   workflow_dispatch:
